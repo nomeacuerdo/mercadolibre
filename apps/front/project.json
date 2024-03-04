@@ -1,7 +1,7 @@
 {
-  "name": "mercadolibre",
+  "name": "front",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/mercadolibre",
+  "sourceRoot": "apps/front",
   "projectType": "application",
   "targets": {},
   "tags": []
