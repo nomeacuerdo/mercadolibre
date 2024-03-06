@@ -6,7 +6,6 @@
 ✨ **[Nx 18.0](https://nx.dev)** ✨
 - **Back**
   - **[Express 4.18](https://expressjs.com/)**
-  - **[Axios 1.6](https://axios-http.com/)**
 - **Front**
   - **[Next.js 14.0](https://nextjs.org/)**
   - **[React.js 18.2](https://react.dev/)**
