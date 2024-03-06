@@ -1,0 +1,30 @@
+.container {
+  color: var(--breadcrumbs-color);
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  padding: 0;
+  padding-bottom: 16px;
+}
+
+.element {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  padding-right: 20px;
+  position: relative;
+
+  &:after {
+    content: '>';
+    position: absolute;
+    right: 5px;
+  }
+
+  &:last-child {
+    font-weight: bold;
+
+    &:after {
+      content: '';
+    }
+  }
+}

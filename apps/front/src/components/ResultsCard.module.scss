@@ -1,0 +1,64 @@
+.container {
+  display: grid;
+  grid-template-areas:
+    "item item item item item item item item location location";
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: auto;
+  padding: 16px;
+  padding-bottom: 0;
+
+  &:last-child {
+    padding-bottom: 16px;
+
+    > div {
+      border-bottom: 0;
+    }
+  }
+}
+
+.item {
+  display: flex;
+  grid-area: item;
+  border-bottom: 1px solid var(--app-bg);
+}
+
+.location {
+  color: var(--secondary-text-color);
+  font-size: 12px;
+  grid-area: location;
+  border-bottom: 1px solid var(--app-bg);
+}
+
+.picture {
+  border-radius: 4px;
+  flex-grow: 0;
+  height: 180px;
+  margin-bottom: 16px;
+  margin-right: 16px;
+  text-decoration: none;
+  width: 180px;
+}
+
+.description {
+  flex-grow: 2;
+}
+
+.link {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.price {
+  display: block;
+  font-size: 24px;
+  margin-bottom: 32px;
+
+  img {
+    margin-left: 10px;
+  }
+}
+
+.title {
+  display: block;
+  font-size: 18px;
+}

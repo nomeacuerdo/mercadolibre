@@ -6,12 +6,13 @@
     "back": "nx serve back",
     "front": "nx start front",
     "front:dev": "nx dev front",
-    "start": "nx run-many -t serve start -p back front"
+    "start": "nx run-many -t serve start -p back front",
+    "dev": "nx run-many -t serve dev -p back front"
   },
   "private": true,
   "dependencies": {
-    "axios": "^1.6.7",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
     "express": "^4.18.1",
     "next": "14.0.4",
     "react": "18.2.0",

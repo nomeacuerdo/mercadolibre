@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 const countOccurrences = (arr, val) => {
   const instances = arr.reduce((a, v) => (v === val ? a + 1 : a), 0);
   return { category: val, instances };
@@ -24,11 +22,9 @@ const getCategoriesFromData = (data) => {
 const getAllItemsData = async(req, res) => {
   const { q } = req.query;
 
-  const data = await axios
-    .get(`https://api.mercadolibre.com/sites/MLA/search?q=${q}`)
-    .then((response) => response.data)
-    .catch((e) => { console.log(e); });
-
+  const data = await fetch(`https://api.mercadolibre.com/sites/MLA/search?q=${q}`)
+    .then(response => response.json());
+  
   const categories = getCategoriesFromData(data);
 
   const mappedItems = data.results.map((item) => ({
@@ -41,7 +37,8 @@ const getAllItemsData = async(req, res) => {
     },
     picture: item.thumbnail,
     condition: item.condition,
-    freeShipping: item.shipping.free_shipping
+    freeShipping: item.shipping.free_shipping,
+    seller: item.seller.nickname
   }));
 
   return res.json({
@@ -50,51 +47,43 @@ const getAllItemsData = async(req, res) => {
       lastname: 'Arteaga'
     },
     categories,
-    items: mappedItems
+    items: mappedItems.slice(0, 4) // Only return the first 4 items
   });
 };
 
 const getSingleItemData = async(req, res) => {
   const id = req.params;
 
-  const data = await axios
-    .all([
-      axios({
-        method: 'get',
-        url:`https://api.mercadolibre.com/items/${id.item}`
-      }),
-      axios({
-        method: 'get',
-        url:`https://api.mercadolibre.com/items/${id.item}/description`
-      }),
-    ])
-    .then((response) => {
-      const [itemReq, descriptionReq] = response || [];
 
-      return {
-        author: {
-          name: 'Nicolas',
-          lastname: 'Arteaga'
-        },
-        item: {
-          id: itemReq.data.id,
-          title: itemReq.data.title,
-          price: {
-            currency: itemReq.data.currency_id,
-            amount: itemReq.data.price,
-            decimals: 0,
-          },
-          picture: itemReq.data.thumbnail,
-          condition: itemReq.data.condition,
-          free_shipping: itemReq.data.shipping.free_shipping,
-          sold_quantity: itemReq.data.sold_quantity,
-          description: descriptionReq.data.plain_text
-        }
-      }
-    })
-    .catch((e) => { console.log(e.message); });
+  const itemData = await fetch(`https://api.mercadolibre.com/items/${id.item}`)
+    .then(response => response.json());
 
-  return res.json(data);
+  const descriptionData = await fetch(`https://api.mercadolibre.com/items/${id.item}/description`)
+    .then(response => response.json());
+
+  const returnObject = {
+    author: {
+      name: 'Nicolas',
+      lastname: 'Arteaga'
+    },
+    item: {
+      id: itemData?.id,
+      category_id: itemData?.category_id,
+      title: itemData?.title,
+      price: {
+        currency: itemData?.currency_id,
+        amount: itemData?.price,
+        decimals: 0,
+      },
+      picture: itemData?.pictures[0].url,
+      condition: itemData?.condition,
+      free_shipping: itemData?.shipping?.free_shipping,
+      sold_quantity: itemData?.sold_quantity,
+      description: descriptionData?.plain_text
+    }
+  };
+
+  return res.json(returnObject);
 };
 
 export {
